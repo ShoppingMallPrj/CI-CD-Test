@@ -1,0 +1,6 @@
+#kakao
+kakao:
+  client:
+    id: 3f3e1072de5bca302c5ba338e69189ea
+  redirect:
+    url: http://localhost:3000

@@ -1,0 +1,16 @@
+#datasource:
+#
+#  #    rds 데이터베이스
+#  #    url: jdbc:mariadb://database-2.c8xuw45xrre9.ap-northeast-2.rds.amazonaws.com:3306/project1
+#  #    driver-class-name: org.mariadb.jdbc.Driver
+#  #    username: admin
+#  #    password: wjdtjdruf69
+#
+#   개발용 로컬 데이터베이스
+spring:
+  datasource:
+    url: jdbc:mariadb://3.36.120.24:3306/shoppingdev
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: qUS4fqFp3N9K
+

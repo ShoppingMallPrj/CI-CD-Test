@@ -1,0 +1,12 @@
+#아마존 클라우드 설정
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAZDM64FMQJQZMNLJC
+      secretKey: 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
+    s3:
+      bucket: ourclothing
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
