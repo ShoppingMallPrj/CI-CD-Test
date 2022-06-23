@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  DOCKER_IMAGE: ghcr.io/{MJ0123}/{CI-CD-Test}
+  DOCKER_IMAGE: ghcr.io/mj0123/ci-cd-test
   VERSION: ${{ github.sha }}
   NAME: go_cicd
 
