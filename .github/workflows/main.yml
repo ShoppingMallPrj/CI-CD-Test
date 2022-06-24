@@ -30,7 +30,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: shoppingmallprj
+          username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Build and push
         id: docker_build
@@ -49,7 +49,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: shoppingmallprj
+          username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Docker run
         run: |
