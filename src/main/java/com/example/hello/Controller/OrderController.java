@@ -33,27 +33,10 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @Operation(summary = "주문 생성을 해보자", description = "주문을 하나 생성한다.. 관리자 권한 필요")
+    @Operation(summary = "주문 생성", description = "주문을 하나 생성한다.. 관리자 권한 필요")
     @Auth(userRole = UserRole.USER)
     @PostMapping("/create")
     public ResponseEntity<Object> createOrder(
-            @User UserDetails userDetails,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "주문 dto", required = true)
-            @RequestBody @Valid OrderInDto orderInDto
-    ) {
-        try {
-            orderService.createOrder(userDetails.getUserId(), orderInDto);
-            return new ResponseEntity<>("", HttpStatus.CREATED);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Operation(summary = "주문 생성을 해보자!", description = "주문을 하나 생성한다.. 관리자 권한 필요")
-    @Auth(userRole = UserRole.USER)
-    @PostMapping("/create1")
-    public ResponseEntity<Object> createOrder1(
             @User UserDetails userDetails,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "주문 dto", required = true)
             @RequestBody @Valid OrderInDto orderInDto
