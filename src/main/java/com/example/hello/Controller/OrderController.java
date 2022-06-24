@@ -33,7 +33,7 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @Operation(summary = "주문 생성", description = "주문을 하나 생성한다.. 관리자 권한 필요")
+    @Operation(summary = "주문 생성", description = "주문을 하나 생성한다.. 관리자 권한 필요(test)")
     @Auth(userRole = UserRole.USER)
     @PostMapping("/create")
     public ResponseEntity<Object> createOrder(
