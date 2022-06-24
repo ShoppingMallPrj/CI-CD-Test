@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 env:
-  DOCKER_IMAGE: ghcr.io/mj0123/ci-cd-test
+  DOCKER_IMAGE: ghcr.io/shoppingmallprj/ci-cd-test
   VERSION: ${{ github.sha }}
   NAME: go_cicd
 
@@ -30,7 +30,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: mj0123
+          username: shoppingmallprj
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Build and push
         id: docker_build
@@ -49,7 +49,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: mj0123
+          username: shoppingmallprj
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Docker run
         run: |
