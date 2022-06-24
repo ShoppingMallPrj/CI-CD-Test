@@ -50,7 +50,7 @@ public class OrderController {
         }
     }
 
-    @Operation(summary = "주문 생성을 해보자", description = "주문을 하나 생성한다.. 관리자 권한 필요")
+    @Operation(summary = "주문 생성을 해보자!", description = "주문을 하나 생성한다.. 관리자 권한 필요")
     @Auth(userRole = UserRole.USER)
     @PostMapping("/create1")
     public ResponseEntity<Object> createOrder1(
