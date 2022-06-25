@@ -58,7 +58,7 @@ public class ItemService {
 
         System.out.println(itemUploadDto);
 
-        //아이템 엔티티 생성
+        //아이템 엔티티 생성 dojd
         ItemEntity itemEntity = new ItemEntity();
 
         itemEntity.setItemName(itemUploadDto.getItemName());
