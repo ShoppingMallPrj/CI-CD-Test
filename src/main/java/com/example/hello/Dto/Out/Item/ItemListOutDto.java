@@ -21,11 +21,17 @@ public class ItemListOutDto {
     @Schema(description = "아이템 고유 아이디")
     private int itemId;
 
+    @Schema(description = "성별")
+    private String gender;
+
+    @Schema(description = "아이템 프로필")
+    private String itemProfile;
+
     @Schema(description = "아이템 이름")
     private String itemName;
 
     @Schema(description = "아이템 가격")
-    private String itemProfile;
+    private String itemPrice;
 
     public static ItemListOutDto from(ItemEntity itemEntity, ModelMapper modelMapper) {
 

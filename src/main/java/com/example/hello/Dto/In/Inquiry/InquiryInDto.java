@@ -17,9 +17,6 @@ import java.util.Set;
 @Data
 public class InquiryInDto {
 
-    @Schema(description = "작성자 고유 id",nullable = false)
-    private int userId;
-
     //문의 제목
     @Schema(description = "문의 제목",nullable = false)
     @Size(min = 5, max = 50, message = "문의사항 제목은 5~50자 제한입니다!")
@@ -30,6 +27,13 @@ public class InquiryInDto {
     @Size(min = 5, max = 100, message = "문의사항은 내용은 5~50자 제한입니다!")
     private String inquiryContent;
 
+    //문의 비밀 여우
+    @Schema(description = "문의 비밀 여부",nullable = false)
+    private boolean isSecret;
+
+    //문의글 비밀번호
+    @Schema(description = "문의 비밀번호",nullable = false)
+    private String inquiryPw;
 
 
 }

@@ -39,7 +39,7 @@ public class RestApiExceptionHandler {
         ErrorDto errorDto = new ErrorDto(Stream.of(ex.getMessage()).collect(Collectors.toSet()));
         return new ResponseEntity<>(
                 errorDto,
-                HttpStatus.BAD_REQUEST
+                HttpStatus.FORBIDDEN
         );
     }
 

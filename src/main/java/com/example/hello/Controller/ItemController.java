@@ -6,9 +6,11 @@ import com.example.hello.Annotation.UserDetails;
 import com.example.hello.Dto.In.Item.*;
 import com.example.hello.Dto.Out.Item.ItemListOutDto;
 import com.example.hello.Dto.Out.Item.ItemOutDto;
+import com.example.hello.Dto.Out.Item.ItemReviewOutDto;
 import com.example.hello.Service.ItemService;
 import com.example.hello.Types.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +52,12 @@ public class ItemController {
 
     @Operation(summary = "상품 목록.", description = "검색어가 있을 경우 검색된 상품, 없을 경우 모든 상품 목록을 보여준다.")
     @GetMapping("/list")
-    public Page<ItemListOutDto> itemList(@RequestParam("keyword") String keyword, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    public Page<ItemListOutDto> itemList(@RequestParam("keyword") String keyword, @RequestParam("gender") String gender, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
         Page<ItemListOutDto> list = null;
 
         if (keyword.isEmpty()) {
-            list = itemService.readAll(pageable);
+            list = itemService.readAllByGender(gender, pageable);
         } else {
             list = itemService.searchItems(keyword, pageable);
         }
@@ -87,9 +89,10 @@ public class ItemController {
     }
 
     @Operation(summary = "상품에 댓글 추가", description = "상품에 의견을 단다, 유저 권한 필요")
-    @Auth(userRole = UserRole.USER)
+//    @Auth(userRole = UserRole.USER)
     @PostMapping("/review/create")
     public ResponseEntity<Object> createReview(
+            @Parameter(hidden = true)
             @User UserDetails userDetails,
             @RequestBody ItemReviewInDto itemReviewInDto) {
 
@@ -101,11 +104,17 @@ public class ItemController {
         );
     }
 
-    @Operation(summary = "상품의 댓글 삭제", description = "상품의 댓글을 삭제 한다. 관리자 권한 필요")
-    @Auth(userRole = UserRole.ADMIN)
-    @DeleteMapping("/review/{id}")
-    public void deleteReview() {
+    @Operation(summary = "상품의 댓글 삭제", description = "상품의 댓글을 삭제 한다. 관리자, 해당 댓글 작성자 권한 필요")
+//    @Auth(userRole = UserRole.USER)
+    @DeleteMapping("{id}/review/{reviewid}")
+    public void deleteReview(
+            @Parameter(hidden = true)
+            @User UserDetails userDetails,
+            @PathVariable("id") int itemId,
+            @PathVariable("reviewid") int reviewId) {
 
+//        itemService.deleteReview(userDetails.getUserId());
+        itemService.deleteReview(reviewId);
     }
 
     @Operation(summary = "상품의 옵션 추가", description = "상품의 옵션을 추가, 관리자 권한 필요")

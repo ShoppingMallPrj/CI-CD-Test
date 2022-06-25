@@ -1,12 +1,12 @@
 package com.example.hello.Service;
 
 
-import com.example.hello.Dto.In.Item.ItemImageInDto;
 import com.example.hello.Dto.In.Item.ItemOptionInDto;
 import com.example.hello.Dto.In.Item.ItemReviewInDto;
 import com.example.hello.Dto.In.Item.ItemUploadDto;
 import com.example.hello.Dto.Out.Item.ItemListOutDto;
 import com.example.hello.Dto.Out.Item.ItemOutDto;
+import com.example.hello.Dto.Out.Item.ItemReviewOutDto;
 import com.example.hello.Entity.ItemEntity;
 import com.example.hello.Entity.ItemImageEntity;
 import com.example.hello.Entity.ItemOptionEntity;
@@ -63,6 +63,7 @@ public class ItemService {
 
         itemEntity.setItemName(itemUploadDto.getItemName());
         itemEntity.setItemCategory(itemUploadDto.getItemCategory());
+        itemEntity.setGender(itemUploadDto.getGender());
         itemEntity.setItemDescription(itemUploadDto.getItemDescription());
         itemEntity.setItemPrice(itemUploadDto.getItemPrice());
         itemEntity.setDeleted(false);
@@ -96,7 +97,7 @@ public class ItemService {
         System.out.println("option : " + Arrays.toString(itemUploadDto.getOption()));
         System.out.println("length : " + itemUploadDto.getOption().length);
 
-        //배열을 하나만 보냈을 경우 예외처리리
+        //배열을 하나만 보냈을 경우 예외처리
        if(!itemUploadDto.getOption()[0].endsWith("}")){
             itemUploadDto.setOption(new String[]{itemUploadDto.getOption()[0]+ ", " + itemUploadDto.getOption()[1]});
         }
@@ -123,9 +124,18 @@ public class ItemService {
     }    // 상품 등록
 
     //모든 상품을 가져온다.
-    public Page<ItemListOutDto> readAll(Pageable pageable) {
+//    public Page<ItemListOutDto> readAll(Pageable pageable) {
+//
+//        Page<ItemEntity> itemEntityPage = itemRepository.findAllByPage(pageable);
+//        Page<ItemListOutDto> itemListDtos = ItemListOutDto.from(itemEntityPage, modelMapperBean.modelMapper());
+//
+//        return itemListDtos;
+//    }
 
-        Page<ItemEntity> itemEntityPage = itemRepository.findAllByPage(pageable);
+    // 각 성별의 모든 상품을 가져온다.
+    public Page<ItemListOutDto> readAllByGender(String gender, Pageable pageable) {
+
+        Page<ItemEntity> itemEntityPage = itemRepository.findAllByGender(gender, pageable);
         Page<ItemListOutDto> itemListDtos = ItemListOutDto.from(itemEntityPage, modelMapperBean.modelMapper());
 
         return itemListDtos;
@@ -138,14 +148,23 @@ public class ItemService {
         ItemEntity itemEntity = itemRepository.findById(id).get();
         ItemOutDto itemOutDto = ItemOutDto.from(itemEntity, modelMapperBean.modelMapper());
 
-        //타겟 아이디의 연관상품 (같은 카테고리)의 아이템 엔티티를 레포지토리에서 추가로 읽어온다
-        Set<ItemEntity> relatedItems = itemRepository.findByItemCategory(itemEntity.getItemCategory());
+        //타겟 아이디의 연관상품 (같은 성별, 같은 카테고리)의 아이템 엔티티를 레포지토리에서 추가로 읽어온다
+        Set<ItemEntity> relatedItems = itemRepository.findByItemCategoryAndGender(itemEntity.getItemCategory(), itemEntity.getGender());
 
         //연관상품 엔티티들을 ListOutDto로 변환
         Set<ItemListOutDto> itemListOutDtos = ItemListOutDto.from(relatedItems, modelMapperBean.modelMapper());
 
-        //itemdto 에 연관상품 dto를 추가한다.
+        //itemDto 에 연관상품 dto를 추가한다.
         itemOutDto.setRelated(itemListOutDtos);
+
+        // 해당 상품 id의 아이템 엔티티를 레포지토리에서 읽어온다.
+        Set<ItemReviewEntity> itemReviews = itemReviewRepository.findByItemId(itemEntity.getItemId());
+
+        // 리뷰 엔티티들을 ReviewOutDto로 변환
+        Set<ItemReviewOutDto> itemReviewOutDtos = ItemReviewOutDto.from(itemReviews, modelMapperBean.modelMapper());
+
+        // itemOutDto에 리뷰 Dto를 추가
+        itemOutDto.setReviews(itemReviewOutDtos);
 
         //완성된 dto를 리턴한다.
         return itemOutDto;
@@ -166,7 +185,7 @@ public class ItemService {
         ItemEntity itemEntity = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         //JPA 의 영속성 컨텍스트 덕분에 entity 객체의 값만 변경하면 자동으로 변경사항 반영
-        itemEntity.update(itemUploadDto.getItemName(), itemUploadDto.getItemCategory(), itemEntity.getItemProfile(), itemUploadDto.getItemDescription(), itemUploadDto.getItemPrice());
+        itemEntity.update(itemUploadDto.getItemName(), itemUploadDto.getItemCategory(), itemUploadDto.getGender(), itemEntity.getItemProfile(), itemUploadDto.getItemDescription(), itemUploadDto.getItemPrice());
     }
 
     // 상품 삭제
@@ -178,6 +197,7 @@ public class ItemService {
         itemEntity.setDeleted(true);
     }
 
+    // 리뷰 생성
     @Transactional
     public void createReview(int userId, ItemReviewInDto itemReviewInDto) {
 
@@ -195,9 +215,10 @@ public class ItemService {
 
     }
 
+    // 리뷰 삭제
     @Transactional
     public void deleteReview(int reviewId) {
-        itemReviewRepository.deleteById(reviewId);
+        itemReviewRepository.deleteByReviewId(reviewId);
     }
 
     //상품의 옵션을 추가한다.

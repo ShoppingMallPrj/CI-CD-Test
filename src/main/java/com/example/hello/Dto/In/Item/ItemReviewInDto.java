@@ -13,9 +13,13 @@ import javax.validation.constraints.Size;
 @Data
 public class ItemReviewInDto {
 
-    @Schema(description = "유저의 id")
+    @Schema(description = "상품의 id")
     @NotNull
     private int itemId;
+
+    @Schema(description = "리뷰의 id")
+    @NotNull
+    private int reviewId;
 
     @Schema(description = "유저의 id")
     @NotNull

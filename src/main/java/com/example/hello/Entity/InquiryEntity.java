@@ -4,6 +4,7 @@ import com.example.hello.Dto.In.Inquiry.InquiryInDto;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "inquiry")
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class InquiryEntity {
 
     @Id
@@ -41,7 +43,16 @@ public class InquiryEntity {
     private String inquiryAnswer;
 
     //답변되었는지 여부
+    @Column(name = "is_answered")
     private boolean isAnswered;
+
+    //비밀 여부
+    @Column(name = "is_secret")
+    private boolean isSecret;
+
+    //비밀번호
+    @Column(name = "inquiry_pw")
+    private String inquiryPw;
 
     public static InquiryEntity from(InquiryInDto inquiryInDto, ModelMapper modelMapper){
 

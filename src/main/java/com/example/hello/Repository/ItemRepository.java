@@ -18,6 +18,11 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
             countQuery = "select count(i) from ItemEntity i where i.isDeleted = false")
     Page<ItemEntity> findAllByPage(Pageable pageable);
 
+    // 각 성별의 모든 상품을 읽어온다. 삭제되지 않은 아이템과 옵션만 검색해서 가져온다.
+    @Query(value = "select i from ItemEntity i left join fetch i.option o where o.isDeleted = false and i.isDeleted = false",
+            countQuery = "select count(i) from ItemEntity i where i.isDeleted = false")
+    Page<ItemEntity> findAllByGender(String gender, Pageable pageable);
+
     //상품명 키워드로 상품 검색
     @Query(value = "select i from ItemEntity i left join fetch i.option o " +
             "where o.isDeleted = false and i.isDeleted = false and i.itemName like %:keyword%",
@@ -25,5 +30,5 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Integer> {
     Page<ItemEntity> findItemWithSearch(String keyword, Pageable pageable);
 
     //연관된 상품
-    Set<ItemEntity> findByItemCategory(String category);
+    Set<ItemEntity> findByItemCategoryAndGender(String category, String gender);
 }

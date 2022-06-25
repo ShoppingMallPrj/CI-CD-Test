@@ -26,6 +26,10 @@ public class ItemUploadDto {
     @NotBlank
     private String itemCategory;
 
+    @Schema(description = "성별 카테고리")
+    @NotBlank
+    private String gender;
+
     @Schema(description = "상품 설명", nullable = false)
     @Size(min = 2, message = "상품 설명은 최소 2자 이상이어야 합니다!")
     @Size(max = 200, message = "상품 설명은 최대 200자 이하여야 합니다!")

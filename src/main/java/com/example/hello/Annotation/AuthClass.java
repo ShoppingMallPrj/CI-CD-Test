@@ -36,7 +36,6 @@ public class AuthClass {
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-
         Auth annotation = methodSignature.getMethod().getAnnotation(Auth.class);
 
         UserEntity userEntity = userRepository.findByUserId(tokenProvider.getUserIdFromRequest(request));

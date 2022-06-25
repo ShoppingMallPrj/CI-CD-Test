@@ -33,8 +33,6 @@ public class UserTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
-
     //유저 정보
     public String userEmail = "user1@exmple.com";
     public String userPw = "example@1234";
@@ -47,6 +45,12 @@ public class UserTest {
     public UserType userType = UserType.EMAIL;
 
     UserEntity userEntity;
+
+    @Test
+    public void encodeTest(){
+
+        System.out.println(        passwordEncoder.encode("example@1234"));
+    }
 
     public void createTestUser(){
 

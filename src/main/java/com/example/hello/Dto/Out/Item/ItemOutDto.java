@@ -25,6 +25,8 @@ public class ItemOutDto {
 
     private int itemPrice;
 
+    private String gender;
+
     //연관 아이템들
     private Set<ItemListOutDto> related = new HashSet<>();
 

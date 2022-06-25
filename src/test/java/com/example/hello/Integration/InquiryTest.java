@@ -95,7 +95,7 @@ public class InquiryTest {
 
         inquiryInDto.setInquiryTitle(inquiryTitle);
         inquiryInDto.setInquiryContent(inquiryContent);
-        inquiryInDto.setUserId(userEntity.getUserId());
+//        inquiryInDto.setUserId(userEntity.getUserId());
 
         InquiryEntity inquiryEntity =  inquiryService.create(userEntity.getUserId(), inquiryInDto);
 

@@ -2,6 +2,7 @@ package com.example.hello.Service;
 
 import com.example.hello.Dto.In.Inquiry.InquiryAnswerInDto;
 import com.example.hello.Dto.In.Inquiry.InquiryInDto;
+import com.example.hello.Dto.Out.Inquiry.InquiryDetailOutDto;
 import com.example.hello.Dto.Out.Inquiry.InquiryOutDto;
 import com.example.hello.Entity.InquiryEntity;
 import com.example.hello.Repository.InquiryRepository;
@@ -31,7 +32,6 @@ public class InquiryService {
 
         Page<InquiryEntity> inquiryEntityPage = inquiryRepository.findAll(pageable);
         Page<InquiryOutDto> inquiryDtos = InquiryOutDto.from(inquiryEntityPage, modelMapperBean.modelMapper());
-
         return inquiryDtos;
     }
 
@@ -44,6 +44,13 @@ public class InquiryService {
         return inquiryDtos;
     }
 
+    //문의사항을 하나 가져온다.
+    public InquiryDetailOutDto read(int inquiryId){
+
+        InquiryEntity inquiryEntity =  inquiryRepository.readByInquiryId(inquiryId);
+        return InquiryDetailOutDto.from(inquiryEntity, modelMapperBean.modelMapper());
+    }
+
     @Transactional
     public InquiryEntity create(int userId, InquiryInDto inquiryInDto){
 
@@ -52,6 +59,8 @@ public class InquiryService {
         inquiryEntity.setUserEntity(userRepository.findByUserId(userId));
         inquiryEntity.setInquiryTitle(inquiryInDto.getInquiryTitle());
         inquiryEntity.setInquiryContent(inquiryInDto.getInquiryContent());
+        inquiryEntity.setSecret(inquiryEntity.isSecret());
+        inquiryEntity.setInquiryPw(inquiryInDto.getInquiryPw());
         inquiryEntity.setAnswered(false);
 
         return inquiryRepository.save(inquiryEntity);

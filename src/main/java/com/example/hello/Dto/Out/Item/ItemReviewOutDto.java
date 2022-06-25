@@ -2,6 +2,7 @@ package com.example.hello.Dto.Out.Item;
 
 import com.example.hello.Entity.ItemReviewEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+@Schema(description = "간략화된 리뷰 데이터")
+@Data
 public class ItemReviewOutDto {
 
     @Schema(description = "리뷰 고유 id", nullable = false)
